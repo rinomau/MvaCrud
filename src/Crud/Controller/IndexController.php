@@ -40,23 +40,20 @@ class IndexController extends AbstractActionController
         
     }
     
-    public function indexAction()
-    {
+    public function indexAction(){
         return new ViewModel(array(
             'aI_entities' => $this->I_service->getAllEntities(),
             'as_messages' => $this->flashMessenger()->setNamespace($this->s_entityName)->getMessages(),
         ));
     }
     
-    public function newAction()
-    {
+    public function newAction(){
         $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_newActionTitle));
         $I_view->setTemplate($this->s_newFormTemplate);
         return $I_view;
     }
     
-    public function editAction($I_entity=null)
-    {
+    public function editAction($I_entity=null){
         if ( null == $I_entity ){
             $I_entity = $this->getEntityFromQuerystring();
         }
@@ -69,8 +66,7 @@ class IndexController extends AbstractActionController
         return $I_view;
     }
     
-    public function deleteAction()
-    {
+    public function deleteAction(){
         $I_entity = $this->getEntityFromQuerystring();
         $this->I_service->deleteEntity($I_entity);
         return $this->redirect()->toRoute('crud');
@@ -78,22 +74,17 @@ class IndexController extends AbstractActionController
     
     public function processAction(){
         if ($this->request->isPost()) {
-
             // get post data
             $as_post = $this->request->getPost()->toArray();
-            
             // fill form
             $this->I_form->setData($as_post);
-    
             // check if form is valid
             if(!$this->I_form->isValid()) {
-                
                 // prepare view
                 $I_view = new ViewModel(array('form'  => $this->I_form,
                                                'title' => $this->s_processActionErrorTitle));
                 $I_view->setTemplate($this->s_processActionErrorForm);
                 return $I_view;
-                
             }
     
             // use service to save data
@@ -106,7 +97,6 @@ class IndexController extends AbstractActionController
             }
             
             return $this->redirect()->toRoute($this->s_processRouteRedirect);
-    
         }
         
         
@@ -120,7 +110,6 @@ class IndexController extends AbstractActionController
      */
     
     private function getEntityFromQuerystring() {
-
         $i_id = (int)$this->params('id');
         
         if (empty($i_id) || $i_id <= 0){
