@@ -2,7 +2,7 @@
 
 use Crud\Service\CrudServiceInterface;
 
-namespace MvaModuleTemplate\Service;
+namespace MvaCrud\Service;
 
 class BaseCrudService implements CrudServiceInterface {
     
@@ -10,8 +10,8 @@ class BaseCrudService implements CrudServiceInterface {
     private $I_entityManager;
     private $I_entity;
     
-    public function __construct($I_entityManager,$s_entityRepository,$I_entity) {
-        $this->I_entityRepository  = $I_entityManager->getRepository($s_entityRepository);
+    public function __construct($I_entityManager,$I_entityRepository,$I_entity) {
+        $this->I_entityRepository  = $I_entityRepository;
         $this->I_entityManager = $I_entityManager;
         $this->I_entity = $I_entity;
     }
