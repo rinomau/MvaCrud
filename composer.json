@@ -10,14 +10,14 @@
     "homepage": "https://github.com/rinomau/mva-crud.git",
     "authors": [
         {
-            "name": "Mauro Rainis ",
+            "name": "Mauro Rainis",
             "email": "mauro.rainis@gmail.com",
             "homepage": "http://www.fitbit.it/"
         }
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*",
+        "zendframework/zendframework": "2.*"
     },    
     "autoload": {
         "psr-0": {
