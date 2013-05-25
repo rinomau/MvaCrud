@@ -8,14 +8,36 @@ use Zend\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
     
-    private $I_service;
-    private $I_form;
+    protected $I_service;
+    protected $I_form;
     private $s_entityName;
+    
+    protected $s_newActionTitle;
+    protected $s_newFormTemplate;
+    protected $s_editActionTitle;
+    protected $s_editFormTemplate;
+    protected $s_processActionErrorTitle;
+    protected $s_processActionErrorForm;
+    
+    protected $s_processRouteRedirect;
     
     public function __construct($s_entityName, $I_service, $I_form) {
         $this->s_entityName = $s_entityName;
         $this->I_service = $I_service;
         $this->I_form = $I_form;
+        
+        // Set defaults variables
+        $this->s_newActionTitle     = 'New '.$this->s_entityName;
+        $this->s_newFormTemplate    = 'crud/index/default-form';
+
+        $this->s_editActionTitle    = 'Edit '.$this->s_entityName;
+        $this->s_editFormTemplate   = 'crud/index/default-form';
+        
+        $this->s_processActionErrorTitle = 'Some errors during entity editing';
+        $this->s_processActionErrorForm  = 'crud/index/default-form';
+        
+        $this->s_processRouteRedirect = 'crud';
+        
     }
     
     public function indexAction()
@@ -26,31 +48,31 @@ class IndexController extends AbstractActionController
         ));
     }
     
-    public function newAction() 
+    public function newAction()
     {
-        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => 'New '.$this->s_entityName));
-        $I_view->setTemplate('crud/index/default-form');
+        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_newActionTitle));
+        $I_view->setTemplate($this->s_newFormTemplate);
         return $I_view;
     }
     
-    public function editAction()
+    public function editAction($I_entity=null)
     {
-        $I_entity = $this->getEntityFromQuerystring();
+        if ( null == $I_entity ){
+            $I_entity = $this->getEntityFromQuerystring();
+        }
                 
         // bind entity values to form
         $this->I_form->bind($I_entity);
         
-        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => 'Edit '.$this->s_entityName));
-        $I_view->setTemplate('crud/index/default-form');
+        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_editActionTitle));
+        $I_view->setTemplate($this->s_editFormTemplate);
         return $I_view;
     }
     
     public function deleteAction()
     {
         $I_entity = $this->getEntityFromQuerystring();
-                
         $this->I_service->deleteEntity($I_entity);
-        
         return $this->redirect()->toRoute('crud');
     }
     
@@ -68,8 +90,8 @@ class IndexController extends AbstractActionController
                 
                 // prepare view
                 $I_view = new ViewModel(array('form'  => $this->I_form,
-                                               'title' => 'Some errors during dog editing'));
-                $I_view->setTemplate('crud/index/default-form');
+                                               'title' => $this->s_processActionErrorTitle));
+                $I_view->setTemplate($this->s_processActionErrorForm);
                 return $I_view;
                 
             }
@@ -78,12 +100,12 @@ class IndexController extends AbstractActionController
             $I_entity = $this->I_service->upsertEntityFromArray($as_post);
     
             if ( $as_post['id'] > 0 ) {
-                $this->flashMessenger()->setNamespace('dog')->addMessage($this->s_entityName . $I_entity->getName() . ' updated successfully');
+                $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' updated successfully');
             } else {
-                $this->flashMessenger()->setNamespace('dog')->addMessage($this->s_entityName . $I_entity->getName() . ' inserted successfully');
+                $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' inserted successfully');
             }
             
-            return $this->redirect()->toRoute('crud');
+            return $this->redirect()->toRoute($this->s_processRouteRedirect);
     
         }
         
