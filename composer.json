@@ -1,5 +1,5 @@
 {
-    "name": "rinomau/mva-crud",
+    "name": "rinomau/MvaCrud",
     "description": "ZF2 module used to facilitate crud operations on doctrine entities.",
     "license": "MIT",
     "type": "zf2-module",
