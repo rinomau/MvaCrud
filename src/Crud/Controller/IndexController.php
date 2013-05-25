@@ -20,6 +20,7 @@ class IndexController extends AbstractActionController
     protected $s_processActionErrorForm;
     
     protected $s_processRouteRedirect;
+    protected $s_deleteRouteRedirect;
     
     public function __construct($s_entityName, $I_service, $I_form) {
         $this->s_entityName = $s_entityName;
@@ -37,6 +38,7 @@ class IndexController extends AbstractActionController
         $this->s_processActionErrorForm  = 'crud/index/default-form';
         
         $this->s_processRouteRedirect = 'crud';
+        $this->s_deleteRouteRedirect = 'crud';
         
     }
     
@@ -69,7 +71,7 @@ class IndexController extends AbstractActionController
     public function deleteAction(){
         $I_entity = $this->getEntityFromQuerystring();
         $this->I_service->deleteEntity($I_entity);
-        return $this->redirect()->toRoute('crud');
+        return $this->redirect()->toRoute($this->s_deleteRouteRedirect);
     }
     
     public function processAction(){
