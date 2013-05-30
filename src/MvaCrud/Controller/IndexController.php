@@ -12,7 +12,6 @@ class IndexController extends AbstractActionController
     protected   $I_form;
     private     $s_entityName;
     
-    protected $s_indexTitle;
     protected $s_indexTemplate;
     protected $s_newTitle;
     protected $s_newTemplate;
@@ -25,13 +24,17 @@ class IndexController extends AbstractActionController
     protected $s_processRouteRedirect;
     protected $s_deleteRouteRedirect;
     
+    /**
+     * @var ModuleOptions
+     */
+    protected $options;
+    
     public function __construct($s_entityName, $I_service, $I_form) {
         $this->s_entityName = $s_entityName;
         $this->I_service = $I_service;
         $this->I_form = $I_form;
         
         // Set defaults variables
-        $this->s_indexTitle       = 'Entity list';
         $this->s_indexTemplate    = 'crud/index/index';
         
         $this->s_newTitle       = 'New '.$this->s_entityName;
@@ -49,6 +52,13 @@ class IndexController extends AbstractActionController
     }
     
     public function indexAction(){
+        
+        if ($this->getOptions()->getIndexPageTitle() ) {
+            $this->s_indexTitle = $this->getOptions()->getIndexPageTitle();
+        } else {
+            $this->s_indexTitle = $this->s_entityName.' list';
+        }
+
         $I_view = new ViewModel(array(
             's_title' => $this->s_indexTitle,
             'aI_entities' => $this->I_service->getAllEntities(),
@@ -133,4 +143,29 @@ class IndexController extends AbstractActionController
         
     }
     
+    /**
+     * set options
+     *
+     * @param UserControllerOptionsInterface $options
+     * @return UserController
+     */
+    public function setOptions(\MvaCrud\Options\ModuleOptions $options )
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * get options
+     *
+     * @return UserControllerOptionsInterface
+     */
+    public function getOptions()
+    {
+        if (!$this->options instanceof \MvaCrud\Options\ModuleOptions) {
+            $this->setOptions($this->getServiceLocator()->get('mvacrud_module_options'));
+        }
+        return $this->options;
+    }
+
 }

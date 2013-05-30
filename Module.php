@@ -26,4 +26,19 @@ class Module
             ),
         );
     }
+    
+    public function getServiceConfig()
+    {
+        return array(
+            'invokables' => array(
+
+            ),
+            'factories' => array(
+                'mvacrud_module_options' => function ($sm) {
+                    $config = $sm->get('Config');
+                    return new Options\ModuleOptions(isset($config['mvacrud']) ? $config['mvacrud'] : array());
+                },
+            ),
+        );
+    }
 }

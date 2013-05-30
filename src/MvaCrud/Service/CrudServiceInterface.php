@@ -26,6 +26,12 @@ interface CrudServiceInterface
      */
     public function upsertEntityFromArray(array $am_formData);
     
+    /**
+     * 
+     * Delete an entity
+     * 
+     * @param type $I_entity
+     */
     public function deleteEntity($I_entity);
 
 }
