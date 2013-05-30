@@ -17,3 +17,4 @@ To Do
 - add option to disable listing all entities
 - add function to call to check if user is allowed to view/edit/delete entity
 - add events trigger on pre/post insert,delete, update
+- add action to display details about an entity
