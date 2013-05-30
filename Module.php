@@ -34,10 +34,7 @@ class Module
 
             ),
             'factories' => array(
-                'mvacrud_module_options' => function ($sm) {
-                    $config = $sm->get('Config');
-                    return new Options\ModuleOptions(isset($config['mvacrud']) ? $config['mvacrud'] : array());
-                },
+                'mvacrud_module_options' => 'MvaCrud\Service\ModuleOptionsServiceFactory'
             ),
         );
     }
