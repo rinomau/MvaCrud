@@ -5,7 +5,7 @@ namespace MvaCrud\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class CrudIndexController extends AbstractActionController
 {
     
     protected   $I_service;

@@ -1,14 +1,35 @@
 mva-crud
 ========
+Base module to extend to simplify crud development.
 
-Base module to extend to simplify crud development
+Usage
+=====
+Create a module with a doctrine entity
+In your module extend CrudIndexController and CrudService
 
-Conventions
-========
-- all entities using this module must implement a getName() and a getId() method
-- all services using this module must implement getEntity(), getAllEntities(), deleteEntity(), upsertEntityFromArray()
+Your indexController:
+```
+class IndexController extends \MvaCrud\Controller\CrudIndexController {
+    
+    public function __construct($I_service, $I_form) {
+        $entityName = 'Dog';
+        parent::__construct($entityName, $I_service, $I_form);
+    }
+}
+```
+Your EntityService
+```
+class DogService extends \MvaCrud\Service\CrudService {
+    
+    public function __construct($I_entityManager) {
+        $this->I_entityRepository  = $I_entityManager->getRepository('MvaModuleTemplate\Entity\Dog');
+        $this->I_entityManager = $I_entityManager;
+        $I_dog = new Dog();
 
-
+        parent::__construct($this->I_entityManager,$this->I_entityRepository,$I_dog);
+    }
+}
+```
 To Do
 =====
 - add option to display a page on delete
