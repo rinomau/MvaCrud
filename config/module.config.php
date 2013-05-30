@@ -21,7 +21,7 @@ return array(
                 'options' => array(
                     'route'    => '/crud',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Crud\Controller',
+                        '__NAMESPACE__' => 'MvaCrud\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
                     ),

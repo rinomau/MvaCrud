@@ -8,22 +8,20 @@ use Zend\View\Model\ViewModel;
 class IndexController extends AbstractActionController
 {
     
-    protected $I_service;
-    protected $I_form;
-    private $s_entityName;
+    protected   $I_service;
+    protected   $I_form;
+    private     $s_entityName;
     
     protected $s_indexTitle;
     protected $s_indexTemplate;
-    
     protected $s_newTitle;
     protected $s_newTemplate;
-    
     protected $s_editTitle;
     protected $s_editTemplate;
     
-    protected $s_processActionErrorTitle;
-    protected $s_processActionErrorForm;
-    
+    protected $s_processErrorTitle;
+    protected $s_processErrorTemplate;
+
     protected $s_processRouteRedirect;
     protected $s_deleteRouteRedirect;
     
@@ -36,17 +34,17 @@ class IndexController extends AbstractActionController
         $this->s_indexTitle       = 'Entity list';
         $this->s_indexTemplate    = 'crud/index/index';
         
-        $this->s_newTitle     = 'New '.$this->s_entityName;
+        $this->s_newTitle       = 'New '.$this->s_entityName;
         $this->s_newTemplate    = 'crud/index/default-form';
 
-        $this->s_editTitle    = 'Edit '.$this->s_entityName;
+        $this->s_editTitle      = 'Edit '.$this->s_entityName;
         $this->s_editTemplate   = 'crud/index/default-form';
         
-        $this->s_processActionErrorTitle = 'Some errors during entity editing';
-        $this->s_processActionErrorForm  = 'crud/index/default-form';
+        $this->s_processErrorTitle = 'Some errors during entity editing';
+        $this->s_processErrorTemplate  = 'crud/index/default-form';
         
-        $this->s_processRouteRedirect = 'crud';
-        $this->s_deleteRouteRedirect = 'crud';
+        $this->s_processRouteRedirect   = 'crud';
+        $this->s_deleteRouteRedirect    = 'crud';
         
     }
     
@@ -95,8 +93,8 @@ class IndexController extends AbstractActionController
             if(!$this->I_form->isValid()) {
                 // prepare view
                 $I_view = new ViewModel(array('form'  => $this->I_form,
-                                               'title' => $this->s_processActionErrorTitle));
-                $I_view->setTemplate($this->s_processActionErrorForm);
+                                              'title' => $this->s_processErrorTitle));
+                $I_view->setTemplate($this->s_processErrorTemplate);
                 return $I_view;
             }
     
@@ -108,11 +106,8 @@ class IndexController extends AbstractActionController
             } else {
                 $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' inserted successfully');
             }
-            
             return $this->redirect()->toRoute($this->s_processRouteRedirect);
         }
-        
-        
         $this->getResponse()->setStatusCode(404);
         return;
     }
