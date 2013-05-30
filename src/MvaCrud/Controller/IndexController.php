@@ -28,6 +28,9 @@ class IndexController extends AbstractActionController
         $this->I_form = $I_form;
         
         // Set defaults variables
+        $this->s_indexActionTitle       = 'Entity list';
+        $this->s_newActionTemplate    = 'crud/index/index';
+        
         $this->s_newActionTitle     = 'New '.$this->s_entityName;
         $this->s_newFormTemplate    = 'crud/index/default-form';
 
@@ -44,6 +47,7 @@ class IndexController extends AbstractActionController
     
     public function indexAction(){
         return new ViewModel(array(
+            's_title' => $this->s_indexActionTitle,
             'aI_entities' => $this->I_service->getAllEntities(),
             'as_messages' => $this->flashMessenger()->setNamespace($this->s_entityName)->getMessages(),
         ));
