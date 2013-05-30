@@ -80,7 +80,7 @@ class IndexController extends AbstractActionController
     public function deleteAction(){
         $I_entity = $this->getEntityFromQuerystring();
         $this->I_service->deleteEntity($I_entity);
-        return $this->redirect()->toRoute($this->s_deleteRouteRedirect);
+        return $this->crudRedirect('delete');
     }
     
     public function processAction(){
@@ -93,8 +93,8 @@ class IndexController extends AbstractActionController
             if(!$this->I_form->isValid()) {
                 // prepare view
                 $I_view = new ViewModel(array('form'  => $this->I_form,
-                                              'title' => $this->s_processErrorTitle));
-                $I_view->setTemplate($this->s_processErrorTemplate);
+                                               'title' => $this->s_processErrorTitle));
+                $I_view->setTemplate($this->s_processErrorForm);
                 return $I_view;
             }
     
@@ -106,7 +106,8 @@ class IndexController extends AbstractActionController
             } else {
                 $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' inserted successfully');
             }
-            return $this->redirect()->toRoute($this->s_processRouteRedirect);
+            
+            return $this->crudRedirect('process');
         }
         $this->getResponse()->setStatusCode(404);
         return;
@@ -116,7 +117,6 @@ class IndexController extends AbstractActionController
     /*
      * Private methods
      */
-    
     private function getEntityFromQuerystring() {
         $i_id = (int)$this->params('id');
         
@@ -126,11 +126,36 @@ class IndexController extends AbstractActionController
                                                          // Zend\Mvc\Application: dispatch.error 
             return;
         }
-        
         $I_entity = $this->I_service->getEntity($i_id);
-                
         return $I_entity;
-        
+    }
+    
+    private function crudRedirect($s_action){
+        $s_currentRoute =  $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+        $as_routeParams =  $this->getEvent()->getRouteMatch()->getParams();
+        $controller = $as_routeParams['controller'];
+
+        switch ($s_action){
+            case 'process':
+                if ($this->s_processRouteRedirect != 'crud') {
+                    return $this->redirect()->toRoute($this->s_processRouteRedirect);
+                }
+                else {
+                    return $this->redirect()->toRoute($s_currentRoute,array('controller'=>$controller,'action'=>'index'));
+                }
+                break;
+            case 'delete':
+                if ($this->s_deleteRouteRedirect != 'crud') {
+                    return $this->redirect()->toRoute($this->s_deleteRouteRedirect);
+                }
+                else {
+                    return $this->redirect()->toRoute($s_currentRoute,array('controller'=>$controller,'action'=>'index'));
+                }
+                break;
+            default:
+                throw new Exception('Invalid redirect action');
+
+        }
     }
     
 }
