@@ -12,10 +12,15 @@ class IndexController extends AbstractActionController
     protected $I_form;
     private $s_entityName;
     
-    protected $s_newActionTitle;
-    protected $s_newFormTemplate;
-    protected $s_editActionTitle;
-    protected $s_editFormTemplate;
+    protected $s_indexTitle;
+    protected $s_indexTemplate;
+    
+    protected $s_newTitle;
+    protected $s_newTemplate;
+    
+    protected $s_editTitle;
+    protected $s_editTemplate;
+    
     protected $s_processActionErrorTitle;
     protected $s_processActionErrorForm;
     
@@ -28,14 +33,14 @@ class IndexController extends AbstractActionController
         $this->I_form = $I_form;
         
         // Set defaults variables
-        $this->s_indexActionTitle       = 'Entity list';
-        $this->s_newActionTemplate    = 'crud/index/index';
+        $this->s_indexTitle       = 'Entity list';
+        $this->s_indexTemplate    = 'crud/index/index';
         
-        $this->s_newActionTitle     = 'New '.$this->s_entityName;
-        $this->s_newFormTemplate    = 'crud/index/default-form';
+        $this->s_newTitle     = 'New '.$this->s_entityName;
+        $this->s_newTemplate    = 'crud/index/default-form';
 
-        $this->s_editActionTitle    = 'Edit '.$this->s_entityName;
-        $this->s_editFormTemplate   = 'crud/index/default-form';
+        $this->s_editTitle    = 'Edit '.$this->s_entityName;
+        $this->s_editTemplate   = 'crud/index/default-form';
         
         $this->s_processActionErrorTitle = 'Some errors during entity editing';
         $this->s_processActionErrorForm  = 'crud/index/default-form';
@@ -46,16 +51,18 @@ class IndexController extends AbstractActionController
     }
     
     public function indexAction(){
-        return new ViewModel(array(
-            's_title' => $this->s_indexActionTitle,
+        $I_view = new ViewModel(array(
+            's_title' => $this->s_indexTitle,
             'aI_entities' => $this->I_service->getAllEntities(),
             'as_messages' => $this->flashMessenger()->setNamespace($this->s_entityName)->getMessages(),
         ));
+        $I_view->setTemplate($this->s_indexTemplate);
+        return $I_view;
     }
     
     public function newAction(){
-        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_newActionTitle));
-        $I_view->setTemplate($this->s_newFormTemplate);
+        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_newTitle));
+        $I_view->setTemplate($this->s_newTemplate);
         return $I_view;
     }
     
@@ -67,8 +74,8 @@ class IndexController extends AbstractActionController
         // bind entity values to form
         $this->I_form->bind($I_entity);
         
-        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_editActionTitle));
-        $I_view->setTemplate($this->s_editFormTemplate);
+        $I_view = new ViewModel(array('form' => $this->I_form, 'title' => $this->s_editTitle));
+        $I_view->setTemplate($this->s_editTemplate);
         return $I_view;
     }
     
