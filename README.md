@@ -112,3 +112,7 @@ To Do
 - add function to call to check if user is allowed to view/edit/delete entity
 - add events trigger on pre/post insert,delete, update
 - add action to display details about an entity
+- allow to use doctrine annotation @HasLifecycleCallbacks and propagate exception (this can be used to check if user has rights to insert/update/delete on repository)
+- allow to call a subset of entities from controller by passing an array of options to use with findBy
+- use hydrator to populate entities fields
+- allow to overwrite template without change configuration file, simply creating right folder structure (like zfcuser)

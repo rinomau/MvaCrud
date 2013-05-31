@@ -7,22 +7,33 @@ use Zend\View\Model\ViewModel;
 
 class CrudIndexController extends AbstractActionController
 {
+    private   $s_entityName;
     
-    protected   $I_service;
-    protected   $I_form;
-    private     $s_entityName;
+    protected $I_service;
+    protected $I_form;
     
+    // Variables used to customize index page
     protected $s_indexTitle;
     protected $s_indexTemplate;
+    
+    // Variables used to customize detail entity page
+    protected $s_detailTitle;
+    protected $s_detailTemplate;
+
+    // Variables used to customize create new entity page
     protected $s_newTitle;
     protected $s_newTemplate;
+    
+    // Variables used to customize edit entity page
     protected $s_editTitle;
     protected $s_editTemplate;
     
+    // Variables used to customize process of insert/update form
     protected $s_processErrorTitle;
     protected $s_processErrorTemplate;
-
     protected $s_processRouteRedirect;
+    
+    // Variables used to customize delete action
     protected $s_deleteRouteRedirect;
     
     private $as_config;
@@ -49,6 +60,10 @@ class CrudIndexController extends AbstractActionController
         $this->s_editTitle = $this->getDefaultValue('s_editTitle',$s_namespace);
         $this->s_editTemplate = $this->getDefaultValue('s_editTemplate',$s_namespace);
         
+        // DetailAction
+        $this->s_detailTitle = $this->getDefaultValue('s_detailTitle',$s_namespace);
+        $this->s_detailTemplate = $this->getDefaultValue('s_detailTemplate',$s_namespace);
+        
         // DeleteAction
         // Alert on delete true/false
         // Confirm on delete true/false
@@ -56,25 +71,22 @@ class CrudIndexController extends AbstractActionController
             // Confirm template
 
         // Process Delete Action
-        // Redirect on delete true false
-            // Redirect route
-        // Success page
-        // Success template
+            // Redirect on delete true false
+                $this->s_deleteRouteRedirect    = $this->getDefaultValue('s_deleteRouteRedirect',$s_namespace);
+            // Success page
+            // Success template
         
         // Process New, Edit Action
             // Error page
-            $this->s_processErrorTitle = 'Some errors during entity editing';
-            $this->s_processErrorTemplate  = 'crud/index/default-form';
+            $this->s_processErrorTitle = $this->getDefaultValue('s_processErrorTitle',$s_namespace);
+            $this->s_processErrorTemplate  = $this->getDefaultValue('s_processErrorTemplate',$s_namespace);
         
-            // Success page
+            // Success page or redirect route
             // Redirect on success true/false
-                // Redirect route
+                $this->s_processRouteRedirect   = $this->getDefaultValue('s_processRouteRedirect',$s_namespace);;
             // Success title
             // Success template
-        
-        $this->s_processRouteRedirect   = 'crud';
-        $this->s_deleteRouteRedirect    = 'crud';
-        
+
     }
     
     public function indexAction(){
@@ -112,6 +124,13 @@ class CrudIndexController extends AbstractActionController
         return $this->crudRedirect('delete');
     }
     
+    public function detailAction(){
+        $I_entity = $this->getEntityFromQuerystring();
+        $I_view = new ViewModel(array('I_entity' => $I_entity, 's_title' => $this->s_detailTitle));
+        $I_view->setTemplate($this->s_detailTemplate);
+        return $I_view;
+    }
+    
     public function processAction(){
         if ($this->request->isPost()) {
             // get post data
@@ -123,7 +142,7 @@ class CrudIndexController extends AbstractActionController
                 // prepare view
                 $I_view = new ViewModel(array('form'  => $this->I_form,
                                                'title' => $this->s_processErrorTitle));
-                $I_view->setTemplate($this->s_processErrorForm);
+                $I_view->setTemplate($this->s_processErrorTemplate);
                 return $I_view;
             }
     

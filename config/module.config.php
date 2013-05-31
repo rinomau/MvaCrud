@@ -93,5 +93,11 @@ return array(
         's_newTemplate'   => 'crud/index/default-form',
         's_editTitle'  => 'Edit page MvaCrud default',
         's_editTemplate'   => 'crud/index/default-form',
+        's_detailTitle' => 'Detail page MvaCrud default',
+        's_detailTemplate' => 'crud/index/detail',
+        's_processErrorTitle' => 'Error page MvaCrud default',
+        's_processErrorTemplate' => 'crud/index/default-form',
+        's_deleteRouteRedirect' => 'crud',
+        's_processRouteRedirect' => 'crud',
     ),
 );
