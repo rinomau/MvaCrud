@@ -25,23 +25,52 @@ class CrudIndexController extends AbstractActionController
     protected $s_processRouteRedirect;
     protected $s_deleteRouteRedirect;
     
-    public function __construct($s_entityName, $I_service, $I_form) {
+    private $as_config;
+    
+    public function __construct($s_entityName, $I_service, $I_form, $as_config) {
         $this->s_entityName = $s_entityName;
         $this->I_service = $I_service;
         $this->I_form = $I_form;
         
-        // Set defaults variables
-        $this->s_indexTitle       = 'Entity list';
-        $this->s_indexTemplate    = 'crud/index/index';
+        $this->as_config = $as_config;
         
-        $this->s_newTitle       = 'New '.$this->s_entityName;
-        $this->s_newTemplate    = 'crud/index/default-form';
+        $as_namespace = explode('\\',get_class($this));
+        $s_namespace = $as_namespace[0];
+        
+        // IndexAction
+        $this->s_indexTitle = $this->getDefaultValue('s_indexTitle',$s_namespace);
+        $this->s_indexTemplate = $this->getDefaultValue('s_indexTemplate',$s_namespace);
+        
+        // NewAction
+        $this->s_newTitle = $this->getDefaultValue('s_newTitle',$s_namespace);
+        $this->s_newTemplate = $this->getDefaultValue('s_newTemplate',$s_namespace);
+        
+        // EditAction
+        $this->s_editTitle = $this->getDefaultValue('s_editTitle',$s_namespace);
+        $this->s_editTemplate = $this->getDefaultValue('s_editTemplate',$s_namespace);
+        
+        // DeleteAction
+        // Alert on delete true/false
+        // Confirm on delete true/false
+            // Confirm title
+            // Confirm template
 
-        $this->s_editTitle      = 'Edit '.$this->s_entityName;
-        $this->s_editTemplate   = 'crud/index/default-form';
+        // Process Delete Action
+        // Redirect on delete true false
+            // Redirect route
+        // Success page
+        // Success template
         
-        $this->s_processErrorTitle = 'Some errors during entity editing';
-        $this->s_processErrorTemplate  = 'crud/index/default-form';
+        // Process New, Edit Action
+            // Error page
+            $this->s_processErrorTitle = 'Some errors during entity editing';
+            $this->s_processErrorTemplate  = 'crud/index/default-form';
+        
+            // Success page
+            // Redirect on success true/false
+                // Redirect route
+            // Success title
+            // Success template
         
         $this->s_processRouteRedirect   = 'crud';
         $this->s_deleteRouteRedirect    = 'crud';
@@ -154,8 +183,34 @@ class CrudIndexController extends AbstractActionController
                 break;
             default:
                 throw new Exception('Invalid redirect action');
-
+                
         }
     }
+    
+    /**
+     * 
+     * Legge il valore di default dei parametri di configurazione del modulo.
+     * I valori possono essere definiti con la chiave 'MvaCrud' e valgono globalmente
+     * oppure con la sottochiave __NAMESPACE__ e valgono per le entità di quel namespace
+     * Nel module.config.php posso definire
+     * 'MvaCrud' => array() // configurazione globale
+     * oppure
+     * 'MvaCrud' => array( __NAMESPACE__ => array()) // configurazione locale al namespace del modulo
+     * oppure
+     * definire il valore delle variabili direttamente a livello di controller nel modulo concreto che estende questo
+     * dopo aver chiamato il costruttore
+     * 
+     * @param string $s_variableName
+     * @param string $s_namespace
+     * @return type
+     */
+    private function getDefaultValue($s_variableName,$s_namespace){
+        if (isset($this->as_config[$s_namespace][$s_variableName])) {
+            return $this->$s_variableName = $this->as_config[$s_namespace][$s_variableName];
+        }  else {
+            return $this->$s_variableName = $this->as_config[$s_variableName];
+        }
+    }
+    
     
 }
