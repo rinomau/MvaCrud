@@ -11,10 +11,26 @@ The suggested installation method is via [composer](http://getcomposer.org/):
 ```sh
 php composer.phar require rinomau/mva-crud:dev-master
 ```
+
+or
+
+1. Add this project in your composer.json:
+
+    ```json
+    "require": {
+        "rinomau/mva-crud": "dev-master"
+    }
+    ```
+
+2. Now tell composer to download MvaCrud by running the command:
+
+    ```bash
+    $ php composer.phar update
+    ```
+
 ## Git Submodule
 
- 1. Install [MvaCrud](https://github.com/rinomau/MvaCrud.git)
- 2. Clone this project into your `./vendor/` directory
+ Clone this project into your `./vendor/` directory
 
     ```sh
     cd vendor
@@ -23,11 +39,11 @@ php composer.phar require rinomau/mva-crud:dev-master
 
 Configuration
 =============
-## Global configuration
+### Global configuration
 Copy `./vendor/rinomau/mva-crud/config/MvaCrud.config.php` to `./config/autoload/MvaCrud.config.php`
 This configuration parameters applies to all modules that use MvaCrud
 
-## Per module configuration
+### Per module configuration
 Add in `module/YourModule/config/config.php` a section like this
 
 ```
@@ -44,7 +60,7 @@ Add in `module/YourModule/config/config.php` a section like this
 ```
 This configuration parameters applies to all controller extending MvaCrud defined in that namespace
 
-## Per controller configuration
+### Per controller configuration
 Redefine in your controller parameters you want to edit after call MvaCrud constructor like
 
 ```
