@@ -4,7 +4,7 @@ use Crud\Service\CrudServiceInterface;
 
 namespace MvaCrud\Service;
 
-class BaseCrudService implements CrudServiceInterface {
+class CrudService implements CrudServiceInterface {
     
     private $I_entityRepository;
     private $I_entityManager;
