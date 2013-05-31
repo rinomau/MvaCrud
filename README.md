@@ -9,7 +9,7 @@ Installation
 The suggested installation method is via [composer](http://getcomposer.org/):
 
 ```sh
-php composer.phar require rinomau/MvaCrud:dev-master
+php composer.phar require rinomau/mva-crud:dev-master
 ```
 ## Git Submodule
 
