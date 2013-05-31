@@ -24,7 +24,7 @@ php composer.phar require rinomau/MvaCrud:dev-master
 Configuration
 =============
 ## Global configuration
-Copy `./vendor/rinomau/config/MvaCrud.config.php` to `./config/autoload/MvaCrud.config.php`
+Copy `./vendor/rinomau/mva-crud/config/MvaCrud.config.php` to `./config/autoload/MvaCrud.config.php`
 This configuration parameters applies to all modules that use MvaCrud
 
 ## Per module configuration
