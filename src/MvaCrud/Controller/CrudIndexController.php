@@ -195,7 +195,10 @@ class CrudIndexController extends AbstractActionController
      * Nel module.config.php posso definire
      * 'MvaCrud' => array() // configurazione globale
      * oppure
-     * 'MvaCrud' => array( __NAMESPACE__ => array()) // configurazione locale al namespace
+     * 'MvaCrud' => array( __NAMESPACE__ => array()) // configurazione locale al namespace del modulo
+     * oppure
+     * definire il valore delle variabili direttamente a livello di controller nel modulo concreto che estende questo
+     * dopo aver chiamato il costruttore
      * 
      * @param string $s_variableName
      * @param string $s_namespace
