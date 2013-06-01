@@ -126,6 +126,12 @@ class CrudIndexController extends AbstractActionController
     
     public function detailAction(){
         $I_entity = $this->getEntityFromQuerystring();
+        /*
+        // https://github.com/doctrine/DoctrineModule/blob/master/docs/hydrator.md
+        $I_entityManager = $this->getserviceLocator()->get('doctrine.entitymanager.orm_default');
+        $hydrator = new DoctrineHydrator($I_entityManager,'\MvaModuleTemplate\Entity\Dog');
+        $dataArray = $hydrator->extract($I_entity);
+        */
         $I_view = new ViewModel(array('I_entity' => $I_entity, 's_title' => $this->s_detailTitle));
         $I_view->setTemplate($this->s_detailTemplate);
         return $I_view;
