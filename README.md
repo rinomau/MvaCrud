@@ -124,3 +124,4 @@ To Do
 - allow to overwrite template without change configuration file, simply creating right folder structure (like zfcuser)
 - add fetchAllAsArray function to Service to easy populate select options
 - add fetchAsArray($options) function to Service to easy populate select options with a subset of entities
+- add base form with method to set text lenght based on entity lenght
