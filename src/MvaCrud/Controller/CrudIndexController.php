@@ -4,6 +4,7 @@ namespace MvaCrud\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class CrudIndexController extends AbstractActionController
 {
