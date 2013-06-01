@@ -122,3 +122,5 @@ To Do
 - allow to call a subset of entities from controller by passing an array of options to use with findBy
 - use hydrator to populate entities fields
 - allow to overwrite template without change configuration file, simply creating right folder structure (like zfcuser)
+- add fetchAllAsArray function to Service to easy populate select options
+- add fetchAsArray($options) function to Service to easy populate select options with a subset of entities
