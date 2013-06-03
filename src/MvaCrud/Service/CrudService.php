@@ -9,11 +9,15 @@ class CrudService implements CrudServiceInterface {
     private $I_entityRepository;
     private $I_entityManager;
     private $I_entity;
+    private $hydrator;
+        
     
     public function __construct($I_entityManager,$I_entityRepository,$I_entity) {
         $this->I_entityRepository  = $I_entityRepository;
         $this->I_entityManager = $I_entityManager;
         $this->I_entity = $I_entity;
+        $this->hydrator = new \DoctrineModule\Stdlib\Hydrator\DoctrineObject($this->I_entityManager,get_class($I_entity));
+        
     }
 
     public function getEntity($i_id){
@@ -24,6 +28,10 @@ class CrudService implements CrudServiceInterface {
         }
         
         return $I_entity;
+    }
+    
+    public function getEntityDetailAsArray($I_entity){
+        return $this->hydrator->extract($I_entity);
     }
 
     public function getAllEntities(){
@@ -43,8 +51,7 @@ class CrudService implements CrudServiceInterface {
             $I_entity = $this->I_entity;
         }
 
-        $hydrator = new \DoctrineModule\Stdlib\Hydrator\DoctrineObject($this->I_entityManager,get_class($I_entity));
-        $hydrator->hydrate($am_formData,$I_entity);
+        $this->hydrator->hydrate($am_formData,$I_entity);
         
         $this->I_entityManager->persist($I_entity);
         $this->I_entityManager->flush();
