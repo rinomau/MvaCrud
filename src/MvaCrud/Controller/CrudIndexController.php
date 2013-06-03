@@ -133,6 +133,7 @@ class CrudIndexController extends AbstractActionController
         $hydrator = new DoctrineHydrator($I_entityManager,'\MvaModuleTemplate\Entity\Dog');
         $dataArray = $hydrator->extract($I_entity);
         */
+        
         $I_view = new ViewModel(array('I_entity' => $I_entity, 's_title' => $this->s_detailTitle));
         $I_view->setTemplate($this->s_detailTemplate);
         return $I_view;
@@ -155,7 +156,7 @@ class CrudIndexController extends AbstractActionController
     
             // use service to save data
             $I_entity = $this->I_service->upsertEntityFromArray($as_post);
-    
+            
             if ( $as_post['id'] > 0 ) {
                 $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' updated successfully');
             } else {

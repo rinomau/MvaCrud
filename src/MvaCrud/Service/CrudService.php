@@ -43,7 +43,8 @@ class CrudService implements CrudServiceInterface {
             $I_entity = $this->I_entity;
         }
 
-        $I_entity->fillWith($am_formData);
+        $hydrator = new \DoctrineModule\Stdlib\Hydrator\DoctrineObject($this->I_entityManager,get_class($I_entity));
+        $hydrator->hydrate($am_formData,$I_entity);
         
         $this->I_entityManager->persist($I_entity);
         $this->I_entityManager->flush();
