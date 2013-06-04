@@ -16,12 +16,16 @@ return array(
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /MvaModuleTemplate/:controller/:action
-            'crud' => array(
-                'type'    => 'Literal',
+            'mva-crud' => array(
+                'type'    => 'Segment',
+                'priority' => 1000,
                 'options' => array(
-                    'route'    => '/crud',
+                    'route'    => '/:module',
+                    'constraints' => array(
+                        'module'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'MvaCrud\Controller',
+                        '__NAMESPACE__' => 'MvaModuleTemplate\Controller',   //@todo use generic module name instead
                         'controller'    => 'Index',
                         'action'        => 'index',
                     ),
@@ -29,28 +33,48 @@ return array(
                 'may_terminate' => true,
                 'child_routes' => array(
                     
-                    // Default routes
-                    'default' => array(
-                        'type'    => 'Segment',
+                    'new' => array(
+                        'type' => 'Literal',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
+                            'route'    => '/new',
                             'defaults' => array(
+                                'action' => 'new',
                             ),
                         ),
                     ),
                     
-                    // Default CRUD routes
-                    'action' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                    'process' => array(
+                        'type' => 'Literal',
                         'options' => array(
-                            'route'    => '/:action[/:id]',
+                            'route'    => '/process',
+                            'defaults' => array(
+                                'action' => 'process',
+                            ),
+                        ),
+                    ),
+                    
+                    'edit' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/edit[/:id]',
                             'constraints' => array(
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id'         => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'action' => 'edit',
+                            ),
+                        ),
+                    ),
+                    
+                    'delete' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/delete[/:id]',
+                            'constraints' => array(
+                                'id'         => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'action' => 'delete',
                             ),
                         ),
                     ),
@@ -60,44 +84,24 @@ return array(
         ),
     ),
     
-    'doctrine' => array(
-        'driver' => array(
-            __NAMESPACE__ . '_driver' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
-            ),
-            'orm_default' => array(
-                'drivers' => array(
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            ),
-        ),
-    ),
-    
     'view_manager' => array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
     ),
-    'controller_plugins' => array(
-       'invokables' => array(
-            'CrudPlugin' => 'Crud\Controller\Plugin\CrudPlugin'
-       )
-    ),
     
     'MvaCrud' => array(
         's_indexTitle' => 'Index page MvaCrud default',
-        's_indexTemplate'   => 'crud/index/index',
+        's_indexTemplate'   => 'mva-crud/index/index',
         's_newTitle'  => 'New page MvaCrud default',
-        's_newTemplate'   => 'crud/index/default-form',
+        's_newTemplate'   => 'mva-crud/index/default-form',
         's_editTitle'  => 'Edit page MvaCrud default',
-        's_editTemplate'   => 'crud/index/default-form',
+        's_editTemplate'   => 'mva-crud/index/default-form',
         's_detailTitle' => 'Detail page MvaCrud default',
-        's_detailTemplate' => 'crud/index/detail',
+        's_detailTemplate' => 'mva-crud/index/detail',
         's_processErrorTitle' => 'Error page MvaCrud default',
-        's_processErrorTemplate' => 'crud/index/default-form',
-        's_deleteRouteRedirect' => 'crud',
-        's_processRouteRedirect' => 'crud',
+        's_processErrorTemplate' => 'mva-crud/index/default-form',
+        's_deleteRouteRedirect' => 'mva-crud',
+        's_processRouteRedirect' => 'mva-crud',
     ),
 );
