@@ -66,16 +66,16 @@ class CrudIndexController extends AbstractActionController
         $this->s_detailTemplate = $this->getDefaultValue('s_detailTemplate',$s_namespace);
         
         // DeleteAction
-        // Alert on delete true/false
-        // Confirm on delete true/false
+        // @todo Alert on delete true/false
+        // @todo Confirm on delete true/false
             // Confirm title
             // Confirm template
 
         // Process Delete Action
             // Redirect on delete true false
                 $this->s_deleteRouteRedirect    = $this->getDefaultValue('s_deleteRouteRedirect',$s_namespace);
-            // Success page
-            // Success template
+            // @todo Success page
+            // @todo Success template
         
         // Process New, Edit Action
             // Error page
@@ -83,10 +83,10 @@ class CrudIndexController extends AbstractActionController
             $this->s_processErrorTemplate  = $this->getDefaultValue('s_processErrorTemplate',$s_namespace);
         
             // Success page or redirect route
-            // Redirect on success true/false
+            // @todo Redirect on success true/false
                 $this->s_processRouteRedirect   = $this->getDefaultValue('s_processRouteRedirect',$s_namespace);;
-            // Success title
-            // Success template
+            // @todo Success title
+            // @todo Success template
 
     }
     
@@ -127,12 +127,6 @@ class CrudIndexController extends AbstractActionController
     
     public function detailAction(){
         $I_entity = $this->getEntityFromQuerystring();
-        /*
-        // https://github.com/doctrine/DoctrineModule/blob/master/docs/hydrator.md
-        $I_entityManager = $this->getserviceLocator()->get('doctrine.entitymanager.orm_default');
-        $hydrator = new DoctrineHydrator($I_entityManager,'\MvaModuleTemplate\Entity\Dog');
-        $dataArray = $hydrator->extract($I_entity);
-        */
         
         $I_view = new ViewModel(array('I_entity' => $I_entity, 's_title' => $this->s_detailTitle));
         $I_view->setTemplate($this->s_detailTemplate);
@@ -189,27 +183,27 @@ class CrudIndexController extends AbstractActionController
     private function crudRedirect($s_action){
         $s_currentRoute =  $this->getEvent()->getRouteMatch()->getMatchedRouteName();
         $as_routeParams =  $this->getEvent()->getRouteMatch()->getParams();
-        $controller = $as_routeParams['controller'];
-
+        $s_module = $as_routeParams['module'];
+        
         switch ($s_action){
             case 'process':
-                if ($this->s_processRouteRedirect != 'crud') {
-                    return $this->redirect()->toRoute($this->s_processRouteRedirect);
+                if ($this->s_processRouteRedirect != 'mva-crud') {
+                    return $this->redirect()->toRoute($this->s_processRouteRedirect, array('module' => $s_module));
                 }
                 else {
-                    return $this->redirect()->toRoute($s_currentRoute,array('controller'=>$controller,'action'=>'index'));
+                    return $this->redirect()->toRoute($s_module, array('module' => $s_module));
                 }
                 break;
             case 'delete':
-                if ($this->s_deleteRouteRedirect != 'crud') {
-                    return $this->redirect()->toRoute($this->s_deleteRouteRedirect);
+                if ($this->s_deleteRouteRedirect != 'mva-crud') {
+                    return $this->redirect()->toRoute($this->s_deleteRouteRedirect, array('module' => $s_module));
                 }
                 else {
-                    return $this->redirect()->toRoute($s_currentRoute,array('controller'=>$controller,'action'=>'index'));
+                    return $this->redirect()->toRoute($s_module,array('module' => $s_module));
                 }
                 break;
             default:
-                throw new Exception('Invalid redirect action');
+                throw new \Exception('Invalid redirect action');
                 
         }
     }

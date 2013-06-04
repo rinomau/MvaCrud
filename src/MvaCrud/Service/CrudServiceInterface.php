@@ -28,12 +28,4 @@ interface CrudServiceInterface
     
     public function deleteEntity($I_entity);
     
-    // public function getEntitiesBy($as_options);
-    
-    // public function fetchAllAsArray();
-    
-    // public function fetchAsArrayBy($as_options);
-    
-
-
 }
