@@ -4,7 +4,6 @@ namespace MvaCrud\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class CrudIndexController extends AbstractActionController
 {
@@ -37,7 +36,9 @@ class CrudIndexController extends AbstractActionController
     // Variables used to customize delete action
     protected $s_deleteRouteRedirect;
     
-    private $as_config;
+    protected $as_config;
+    protected $s_namespace;
+    protected $s_module;
     
     public function __construct($s_entityName, $I_service, $I_form, $as_config) {
         $this->s_entityName = $s_entityName;
@@ -47,23 +48,24 @@ class CrudIndexController extends AbstractActionController
         $this->as_config = $as_config;
         
         $as_namespace = explode('\\',get_class($this));
-        $s_namespace = $as_namespace[0];
+        $this->s_namespace = $as_namespace[0];
+        $this->s_module = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $this->s_namespace));
         
         // IndexAction
-        $this->s_indexTitle = $this->getDefaultValue('s_indexTitle',$s_namespace);
-        $this->s_indexTemplate = $this->getDefaultValue('s_indexTemplate',$s_namespace);
+        $this->s_indexTitle = $this->getDefaultValue('s_indexTitle',$this->s_namespace);
+        $this->s_indexTemplate = $this->getDefaultValue('s_indexTemplate',$this->s_namespace);
         
         // NewAction
-        $this->s_newTitle = $this->getDefaultValue('s_newTitle',$s_namespace);
-        $this->s_newTemplate = $this->getDefaultValue('s_newTemplate',$s_namespace);
+        $this->s_newTitle = $this->getDefaultValue('s_newTitle',$this->s_namespace);
+        $this->s_newTemplate = $this->getDefaultValue('s_newTemplate',$this->s_namespace);
         
         // EditAction
-        $this->s_editTitle = $this->getDefaultValue('s_editTitle',$s_namespace);
-        $this->s_editTemplate = $this->getDefaultValue('s_editTemplate',$s_namespace);
+        $this->s_editTitle = $this->getDefaultValue('s_editTitle',$this->s_namespace);
+        $this->s_editTemplate = $this->getDefaultValue('s_editTemplate',$this->s_namespace);
         
         // DetailAction
-        $this->s_detailTitle = $this->getDefaultValue('s_detailTitle',$s_namespace);
-        $this->s_detailTemplate = $this->getDefaultValue('s_detailTemplate',$s_namespace);
+        $this->s_detailTitle = $this->getDefaultValue('s_detailTitle',$this->s_namespace);
+        $this->s_detailTemplate = $this->getDefaultValue('s_detailTemplate',$this->s_namespace);
         
         // DeleteAction
         // @todo Alert on delete true/false
@@ -73,18 +75,18 @@ class CrudIndexController extends AbstractActionController
 
         // Process Delete Action
             // Redirect on delete true false
-                $this->s_deleteRouteRedirect    = $this->getDefaultValue('s_deleteRouteRedirect',$s_namespace);
+                $this->s_deleteRouteRedirect    = $this->getDefaultValue('s_deleteRouteRedirect',$this->s_namespace);
             // @todo Success page
             // @todo Success template
         
         // Process New, Edit Action
             // Error page
-            $this->s_processErrorTitle = $this->getDefaultValue('s_processErrorTitle',$s_namespace);
-            $this->s_processErrorTemplate  = $this->getDefaultValue('s_processErrorTemplate',$s_namespace);
+            $this->s_processErrorTitle = $this->getDefaultValue('s_processErrorTitle',$this->s_namespace);
+            $this->s_processErrorTemplate  = $this->getDefaultValue('s_processErrorTemplate',$this->s_namespace);
         
             // Success page or redirect route
             // @todo Redirect on success true/false
-                $this->s_processRouteRedirect   = $this->getDefaultValue('s_processRouteRedirect',$s_namespace);;
+                $this->s_processRouteRedirect   = $this->getDefaultValue('s_processRouteRedirect',$this->s_namespace);;
             // @todo Success title
             // @todo Success template
 
@@ -92,6 +94,7 @@ class CrudIndexController extends AbstractActionController
     
     public function indexAction(){
         $I_view = new ViewModel(array(
+            's_module' => $this->s_module,
             's_title' => $this->s_indexTitle,
             'aI_entities' => $this->I_service->getAllEntities(),
             'as_messages' => $this->flashMessenger()->setNamespace($this->s_entityName)->getMessages(),
@@ -181,7 +184,6 @@ class CrudIndexController extends AbstractActionController
     }
     
     private function crudRedirect($s_action){
-        $s_currentRoute =  $this->getEvent()->getRouteMatch()->getMatchedRouteName();
         $as_routeParams =  $this->getEvent()->getRouteMatch()->getParams();
         $s_module = $as_routeParams['module'];
         

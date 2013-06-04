@@ -1,6 +1,6 @@
 <h1><?php echo $this->s_title; ?></h1>
 
-<div><a href="<?php echo $this->url('mva-crud/new', array('module' => 'mva-module-template'))?>">Add</a></div>
+<div><a href="<?php echo $this->url('mva-crud/new', array('module' => $this->s_module))?>">Add</a></div>
 
 <?php if (count($this->as_messages)) { ?>
 <div style="border: 2px solid blue">
@@ -13,7 +13,7 @@
 <div>
 <?php foreach($this->aI_entities as $I_entity) { ?>
 <p><?php echo $I_entity->getName()?> 
-- <a href="<?php echo $this->url('mva-crud/edit', array('module' => 'mva-module-template', 'id' => $I_entity->getId()))?>">edit</a> 
-- <a href="<?php echo $this->url('mva-crud/delete', array('module' => 'mva-module-template', 'id' => $I_entity->getId()))?>">delete</a></p>
+- <a href="<?php echo $this->url('mva-crud/edit', array('module' => $this->s_module, 'id' => $I_entity->getId()))?>">edit</a> 
+- <a href="<?php echo $this->url('mva-crud/delete', array('module' => $this->s_module, 'id' => $I_entity->getId()))?>">delete</a></p>
 <?php } ?>
 </div>
