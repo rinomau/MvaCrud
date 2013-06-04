@@ -1,8 +1,8 @@
 <?php
 
-use Crud\Service\CrudServiceInterface;
-
 namespace MvaCrud\Service;
+
+use MvaCrud\Service\CrudServiceInterface;
 
 class CrudService implements CrudServiceInterface {
     
