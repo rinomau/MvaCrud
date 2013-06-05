@@ -26,4 +26,15 @@ class Module
             ),
         );
     }
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(
+                'renderForm' => 'MvaCrud\View\Helper\RenderForm',
+                'renderDefaultElement' => '\MvaCrud\View\Helper\RenderDefaultElement',
+            )
+    	);
+    }
+
 }

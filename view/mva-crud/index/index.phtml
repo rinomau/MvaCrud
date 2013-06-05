@@ -11,9 +11,24 @@
 <?php } ?>
 
 <div>
-<?php foreach($this->aI_entities as $I_entity) { ?>
-<p><?php echo $I_entity->getName()?> 
-- <a href="<?php echo $this->url('mva-crud/edit', array('module' => $this->s_module, 'id' => $I_entity->getId()))?>">edit</a> 
-- <a href="<?php echo $this->url('mva-crud/delete', array('module' => $this->s_module, 'id' => $I_entity->getId()))?>">delete</a></p>
-<?php } ?>
+    <table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($this->aI_entities as $I_entity): ?>
+        <tr class="odd gradeX">
+            <td><?php echo $I_entity->getName()?></td>
+            <td>
+                <a href="<?php echo $this->url('mva-crud/edit', array('module' => $this->s_module, 'id' => $I_entity->getId()))?>">edit</a>
+                -
+                <a href="<?php echo $this->url('mva-crud/delete', array('module' => $this->s_module, 'id' => $I_entity->getId()))?>">delete</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+    </table>
 </div>
