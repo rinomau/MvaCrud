@@ -15,26 +15,26 @@ class RenderDefaultElement extends AbstractHelper {
             $s_classError = '';
         }
 
-        $out = '<div class="control-group'.$s_classError.'">'."\n";
+        $out = "\n".'<div class="MvaFormRow'.$s_classError.'">'."\n";
         // Print label
-        $out .= "\t".'<label class="control-label">'.$element->getLabel().'</label>'."\n";
-        $out .= "\t".'<div class="controls">'.$this->view->formElement($element);
+        $out .= "\t".'<label>'.$element->getLabel().'</label>'."\n";
+        $out .= "\t".'<div class="MvaFormElement">'.$this->view->formElement($element);
         // Print form errors
         if ( $this->view->formElementErrors($element) ) {
             $out .= $this->view->formElementErrors()
-                ->setMessageOpenFormat("\t".'<span class="help-inline">')
+                ->setMessageOpenFormat("\t".'<span>')
                 ->setMessageSeparatorString('<br>')
                 ->setMessageCloseString('</span>'."\n")
                 ->render($element);
         }
         // Print tooltip options
         if ( count( $element->getOptions() ) ){
-            $out .= '<span class="help-block">';
+            $out .= '<span>';
             $out .= $element->getOption('tooltip');
             $out .= '</span>';
         }
         $out .= '</div>'."\n";
-        $out .= '</div>'."\n";
+        $out .= '</div>'."\n\n";
         return $out;
     }
 }
