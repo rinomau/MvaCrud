@@ -1,3 +1,6 @@
+[![Total Downloads](https://poser.pugx.org/rinomau/mva-crud/downloads.png)](https://packagist.org/packages/rinomau/mva-crud)
+
+
 MvaCrud
 ========
 Base module to extend to simplify crud development.
