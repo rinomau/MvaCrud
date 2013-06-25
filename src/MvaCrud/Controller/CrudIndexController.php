@@ -125,6 +125,8 @@ class CrudIndexController extends AbstractActionController
     public function deleteAction(){
         $I_entity = $this->getEntityFromQuerystring();
         $this->I_service->deleteEntity($I_entity);
+        $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage('Record deleted successfully.');
+        
         return $this->crudRedirect('delete');
     }
     
@@ -183,31 +185,14 @@ class CrudIndexController extends AbstractActionController
         return $I_entity;
     }
     
-    private function crudRedirect($s_action){
-        $as_routeParams =  $this->getEvent()->getRouteMatch()->getParams();
-        $s_module = $as_routeParams['module'];
+    private function crudRedirect($s_action) {
         
-        switch ($s_action){
-            case 'process':
-                if ($this->s_processRouteRedirect != 'mva-crud') {
-                    return $this->redirect()->toRoute($this->s_processRouteRedirect, array('module' => $s_module));
-                }
-                else {
-                    return $this->redirect()->toRoute($s_module, array('module' => $s_module));
-                }
-                break;
-            case 'delete':
-                if ($this->s_deleteRouteRedirect != 'mva-crud') {
-                    return $this->redirect()->toRoute($this->s_deleteRouteRedirect, array('module' => $s_module));
-                }
-                else {
-                    return $this->redirect()->toRoute($s_module,array('module' => $s_module));
-                }
-                break;
-            default:
-                throw new \Exception('Invalid redirect action');
-                
-        }
+        $as_routeParams = $this->getEvent()->getRouteMatch()->getParams();
+        $s_module       = $as_routeParams['module'];
+        
+        $this->redirect()->toRoute('mva-crud', array('module' => $s_module));       
+        
+        return;
     }
     
     /**
