@@ -136,10 +136,14 @@ class CrudIndexController extends AbstractActionController
         return $I_view;
     }
     
-    public function processAction(){
+    public function processAction($custom_data=null){
         if ($this->request->isPost()) {
             // get post data
             $as_post = $this->request->getPost()->toArray();
+            // Add custom data from children classes
+            if ($custom_data != null ){
+                $as_post = array_merge($as_post,$custom_data);
+            }
             // fill form
             $this->I_form->setData($as_post);
             // check if form is valid
