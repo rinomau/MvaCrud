@@ -174,7 +174,7 @@ class CrudIndexController extends AbstractActionController
     /*
      * Private methods
      */
-    private function getEntityFromQuerystring() {
+    protected function getEntityFromQuerystring() {
         $i_id = (int)$this->params('id');
         
         if (empty($i_id) || $i_id <= 0){
