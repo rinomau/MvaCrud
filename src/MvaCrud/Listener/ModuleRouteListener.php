@@ -59,14 +59,20 @@ class ModuleRouteListener implements ListenerAggregateInterface
         
         $matches = $e->getRouteMatch();
         
+        
         if (!$matches instanceof \Zend\Mvc\Router\Http\RouteMatch) {
             // Can't do anything without a route match
             //return;
         }
        
+        $moduleManager =  $e->getApplication()->getServiceManager()->get('modulemanager');
+        $modules = array_keys($moduleManager->getLoadedModules(false));
+        
         $module = $matches->getParam('module', false);
-        if (!$module) {
-            // No module found; nothing to do
+        str_replace(' ', '', ucwords(str_replace('-', ' ', $module)));
+        
+        if (!$module || !in_array(str_replace(' ', '', ucwords(str_replace('-', ' ', $module))), $modules)) {
+            // No module found or not in the enabled module list; nothing to do
             return;
         }
 

@@ -20,13 +20,14 @@ return array(
                 'type'    => 'Segment',
                 'priority' => 1000,
                 'options' => array(
-                    'route'    => '/:module',
+                    'route'    => '/:module/:controller',
                     'constraints' => array(
                         'module'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',                        
                     ),
                     'defaults' => array(
-                        'controller'    => 'Index',
-                        'action'        => 'index',
+                        'controller' =>  'index',
+                        'action'     => 'index',
                     ),
                 ),
                 'may_terminate' => true,
