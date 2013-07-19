@@ -22,11 +22,11 @@ class CrudService implements CrudServiceInterface {
 
     public function getEntity($i_id){
         $I_entity = $this->I_entityRepository->find($i_id);
-        
+
         if ($I_entity === null ){
             throw new \Exception('Entity not found');    //@todo throw custom exception type
         }
-        
+
         return $I_entity;
     }
     
@@ -51,11 +51,19 @@ class CrudService implements CrudServiceInterface {
             $I_entity = $this->I_entity;
         }
 
-        $this->hydrator->hydrate($am_formData,$I_entity);
+        //$this->hydrator->hydrate($am_formData,$I_entity);
+        //@fixme sostituire con gli hydrator di doctrine
+        $I_entity->exchangeArray($am_formData);
         
         $this->I_entityManager->persist($I_entity);
         $this->I_entityManager->flush();
     
+        return $I_entity;
+    }
+    
+    public function saveEntity($I_entity){
+        $this->I_entityManager->persist($I_entity);
+        $this->I_entityManager->flush();
         return $I_entity;
     }
     

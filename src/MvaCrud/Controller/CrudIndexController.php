@@ -174,7 +174,7 @@ class CrudIndexController extends AbstractActionController
     /*
      * Private methods
      */
-    private function getEntityFromQuerystring() {
+    protected function getEntityFromQuerystring() {
         $i_id = (int)$this->params('id');
         
         if (empty($i_id) || $i_id <= 0){
@@ -183,6 +183,11 @@ class CrudIndexController extends AbstractActionController
                                                          // Zend\Mvc\Application: dispatch.error 
             return;
         }
+        $I_entity = $this->I_service->getEntity($i_id);
+        return $I_entity;
+    }
+
+    protected function getEntity($i_id) {
         $I_entity = $this->I_service->getEntity($i_id);
         return $I_entity;
     }
