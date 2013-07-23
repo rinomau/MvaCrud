@@ -36,6 +36,11 @@ class CrudIndexController extends AbstractActionController
     // Variables used to customize delete action
     protected $s_deleteRouteRedirect;
     
+    // Variables used to display flash messages to user
+    protected $s_flashMessageNew;
+    protected $s_flashMessageUpdate;
+    protected $s_flashMessageDelete;
+    
     protected $as_config;
     protected $s_namespace;
     protected $s_module;
@@ -66,6 +71,11 @@ class CrudIndexController extends AbstractActionController
         // DetailAction
         $this->s_detailTitle = $this->getDefaultValue('s_detailTitle',$this->s_namespace);
         $this->s_detailTemplate = $this->getDefaultValue('s_detailTemplate',$this->s_namespace);
+        
+        // Flash messages
+        $this->s_flashMessageNew = $this->s_entityName.' inserted succesfully';
+        $this->s_flashMessageUpdate = $this->s_entityName.' updated succesfully';
+        $this->s_flashMessageDelete = $this->s_entityName.' deleted succesfully';
         
         // DeleteAction
         // @todo Alert on delete true/false
@@ -125,6 +135,7 @@ class CrudIndexController extends AbstractActionController
     public function deleteAction(){
         $I_entity = $this->getEntityFromQuerystring();
         $this->I_service->deleteEntity($I_entity);
+        $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_flashMessageDelete);
         return $this->crudRedirect('delete');
     }
     
@@ -159,9 +170,9 @@ class CrudIndexController extends AbstractActionController
             $I_entity = $this->I_service->upsertEntityFromArray($as_post);
             
             if ( $as_post['id'] > 0 ) {
-                $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' updated successfully');
+                $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_flashMessageUpdate);
             } else {
-                $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_entityName . $I_entity->getName() . ' inserted successfully');
+                $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_flashMessageNew);
             }
             
             return $this->crudRedirect('process');

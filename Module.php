@@ -44,6 +44,7 @@ class Module
             'invokables' => array(
                 'renderForm' => 'MvaCrud\View\Helper\RenderForm',
                 'renderDefaultElement' => '\MvaCrud\View\Helper\RenderDefaultElement',
+                'DisplayFlash' => 'MvaCrud\View\Helper\DisplayFlash'
             )
     	);
     }
