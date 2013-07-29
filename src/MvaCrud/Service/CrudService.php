@@ -70,6 +70,10 @@ class CrudService implements CrudServiceInterface {
     public function deleteEntity( $I_entity ) {
         $this->I_entityManager->remove($I_entity);
         $this->I_entityManager->flush();
-    }    
+    }
+    
+    public function find($i_id){
+        return $this->I_entityRepository->find($i_id);
+    }
     
 }
