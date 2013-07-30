@@ -8,7 +8,7 @@ class DisplayFlash extends AbstractHelper {
 
 	public function __invoke($flashMessages) {
             if(count($flashMessages)){
-                $out  = '<div class="alert alert-error">';
+                $out  = '<div class="alert">';
                 $out .= '<button class="close" data-dismiss="alert"></button>';
                 foreach ($flashMessages as $msg){
                     $out .= '<h4>'.$msg.'</h4>';

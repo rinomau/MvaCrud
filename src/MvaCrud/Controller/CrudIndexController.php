@@ -73,9 +73,9 @@ class CrudIndexController extends AbstractActionController
         $this->s_detailTemplate = $this->getDefaultValue('s_detailTemplate',$this->s_namespace);
         
         // Flash messages
-        $this->s_flashMessageNew = $this->s_entityName.' inserted succesfully';
-        $this->s_flashMessageUpdate = $this->s_entityName.' updated succesfully';
-        $this->s_flashMessageDelete = $this->s_entityName.' deleted succesfully';
+        $this->s_flashMessageNew = $this->getDefaultValue('s_flashMessageNew',$this->s_namespace);
+        $this->s_flashMessageUpdate = $this->getDefaultValue('s_flashMessageUpdate',$this->s_namespace);
+        $this->s_flashMessageDelete = $this->getDefaultValue('s_flashMessageDelete',$this->s_namespace);
         
         // DeleteAction
         // @todo Alert on delete true/false
@@ -151,12 +151,14 @@ class CrudIndexController extends AbstractActionController
         if ($this->request->isPost()) {
             // get post data
             $as_post = $this->request->getPost()->toArray();
+            
             // Add custom data from children classes
             if ($custom_data != null ){
                 $as_post = array_merge($as_post,$custom_data);
             }
             // fill form
             $this->I_form->setData($as_post);
+            
             // check if form is valid
             if(!$this->I_form->isValid()) {
                 // prepare view
@@ -165,6 +167,10 @@ class CrudIndexController extends AbstractActionController
                 $I_view->setTemplate($this->s_processErrorTemplate);
                 return $I_view;
             }
+            
+            // @fixme Spostare quanto segue in un metodo a se che possa essere richiamato
+            // dalle classi figlie che fanno la validazione per conto proprio in modo
+            // da non doverla fare due volte
     
             // use service to save data
             $I_entity = $this->I_service->upsertEntityFromArray($as_post);

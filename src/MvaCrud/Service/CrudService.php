@@ -8,7 +8,7 @@ class CrudService implements CrudServiceInterface {
     
     private $I_entityRepository;
     private $I_entityManager;
-    private $I_entity;
+    protected $I_entity;
     private $hydrator;
         
     
