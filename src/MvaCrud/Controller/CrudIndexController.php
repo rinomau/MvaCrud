@@ -99,7 +99,7 @@ class CrudIndexController extends AbstractActionController
                 $this->s_processRouteRedirect   = $this->getDefaultValue('s_processRouteRedirect',$this->s_namespace);;
             // @todo Success title
             // @todo Success template
-
+                
     }
     
     public function indexAction(){
@@ -158,7 +158,7 @@ class CrudIndexController extends AbstractActionController
             }
             // fill form
             $this->I_form->setData($as_post);
-            
+
             // check if form is valid
             if(!$this->I_form->isValid()) {
                 // prepare view
@@ -211,12 +211,23 @@ class CrudIndexController extends AbstractActionController
     
     private function crudRedirect($s_action){
         $as_routeParams =  $this->getEvent()->getRouteMatch()->getParams();
-        $s_module = $as_routeParams['module'];
+        //print_r($as_routeParams);
+        if (isset($as_routeParams['module'])){
+            $s_module = $as_routeParams['module'];
+        }
+        else{
+            $s_module = '';
+        }
+        
         
         switch ($s_action){
             case 'process':
+                // *********************************************************************
+                // // @fixme A COSA SERVE QUESTO IF? COME VIENE VALORIZZATO IL S_MODULE ???
+                // *********************************************************************
                 if ($this->s_processRouteRedirect != 'mva-crud') {
-                    return $this->redirect()->toRoute($this->s_processRouteRedirect, array('module' => $s_module));
+                    $this->s_processRouteRedirectParams['module'] = $s_module;
+                    return $this->redirect()->toRoute($this->s_processRouteRedirect, $this->s_processRouteRedirectParams);
                 }
                 else {
                     return $this->redirect()->toRoute($s_module, array('module' => $s_module));
@@ -224,7 +235,8 @@ class CrudIndexController extends AbstractActionController
                 break;
             case 'delete':
                 if ($this->s_deleteRouteRedirect != 'mva-crud') {
-                    return $this->redirect()->toRoute($this->s_deleteRouteRedirect, array('module' => $s_module));
+                    $this->s_deleteRouteRedirectParams['module'] = $s_module;
+                    return $this->redirect()->toRoute($this->s_deleteRouteRedirect, $this->s_deleteRouteRedirectParams);
                 }
                 else {
                     return $this->redirect()->toRoute($s_module,array('module' => $s_module));

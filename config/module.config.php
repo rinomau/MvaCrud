@@ -20,7 +20,7 @@ return array(
                 'type'    => 'Segment',
                 'priority' => 1000,
                 'options' => array(
-                    'route'    => '/:module',
+                    'route'    => '/crud/:module',
                     'constraints' => array(
                         'module'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
