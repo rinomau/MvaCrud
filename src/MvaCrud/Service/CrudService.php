@@ -3,6 +3,7 @@
 namespace MvaCrud\Service;
 
 use MvaCrud\Service\CrudServiceInterface;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 
 class CrudService implements CrudServiceInterface {
     
@@ -51,9 +52,7 @@ class CrudService implements CrudServiceInterface {
             $I_entity = $this->I_entity;
         }
 
-        //$this->hydrator->hydrate($am_formData,$I_entity);
-        //@fixme sostituire con gli hydrator di doctrine
-        $I_entity->exchangeArray($am_formData);
+        $this->hydrator->hydrate($am_formData,$I_entity);
         
         $this->I_entityManager->persist($I_entity);
         $this->I_entityManager->flush();
