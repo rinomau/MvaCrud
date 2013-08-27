@@ -102,6 +102,10 @@ class CrudIndexController extends AbstractActionController
                 
     }
     
+    // *************************************************************************
+    // CRUD OPERATIONS
+    // *************************************************************************
+    
     public function indexAction(){
         $I_view = new ViewModel(array(
             's_module' => $this->s_module,
@@ -158,12 +162,12 @@ class CrudIndexController extends AbstractActionController
             }
             // fill form
             $this->I_form->setData($as_post);
-
+            
             // check if form is valid
             if(!$this->I_form->isValid()) {
                 // prepare view
                 $I_view = new ViewModel(array('form'  => $this->I_form,
-                                               'title' => $this->s_processErrorTitle));
+                                              'title' => $this->s_processErrorTitle));
                 $I_view->setTemplate($this->s_processErrorTemplate);
                 return $I_view;
             }
@@ -171,7 +175,7 @@ class CrudIndexController extends AbstractActionController
             // @fixme Spostare quanto segue in un metodo a se che possa essere richiamato
             // dalle classi figlie che fanno la validazione per conto proprio in modo
             // da non doverla fare due volte
-    
+
             // use service to save data
             $I_entity = $this->I_service->upsertEntityFromArray($as_post);
             
@@ -187,11 +191,19 @@ class CrudIndexController extends AbstractActionController
         return;
     }
     
+    // *************************************************************************
+    // UTILITY FUNCTIONS
+    // *************************************************************************
     
     /*
-     * Private methods
+     * Protected methods
      */
-    protected function getEntityFromQuerystring() {
+    protected function getEntityFromQuerystring($I_service=null) {
+        // Se non gli passo un service manager specifico usa quello di default
+        if ( $I_service === null){
+            $I_service = $this->I_service;
+        }
+        
         $i_id = (int)$this->params('id');
         
         if (empty($i_id) || $i_id <= 0){
@@ -200,12 +212,16 @@ class CrudIndexController extends AbstractActionController
                                                          // Zend\Mvc\Application: dispatch.error 
             return;
         }
-        $I_entity = $this->I_service->getEntity($i_id);
+        $I_entity = $I_service->getEntity($i_id);
         return $I_entity;
     }
 
-    protected function getEntity($i_id) {
-        $I_entity = $this->I_service->getEntity($i_id);
+    protected function getEntity($i_id,$I_service=null) {
+        // Se non gli passo un service manager specifico usa quello di default
+        if ( $I_service === null){
+            $I_service = $this->I_service;
+        }
+        $I_entity = $I_service->getEntity($i_id);
         return $I_entity;
     }
     
