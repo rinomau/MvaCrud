@@ -82,11 +82,15 @@ class CrudService implements CrudServiceInterface {
      */
     public function getTendina(){
         $as_lista = array();
-        $aI_entities = $this->getAllEntities();
+        $aI_entities = $this->getTendinaEntities();
         foreach ($aI_entities as $I_entity )
         {
             $as_lista[$I_entity->getId()] = $I_entity->getNome();
         }
         return $as_lista;
+    }
+    
+    public function getTendinaEntities(){
+        return $this->getAllEntities();
     }
 }

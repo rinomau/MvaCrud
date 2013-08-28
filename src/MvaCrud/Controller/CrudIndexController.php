@@ -12,6 +12,8 @@ class CrudIndexController extends AbstractActionController
     protected $I_service;
     protected $I_form;
     
+    protected $redirectAfterProcess = true;
+    
     // Variables used to customize index page
     protected $s_indexTitle;
     protected $s_indexTemplate;
@@ -155,7 +157,7 @@ class CrudIndexController extends AbstractActionController
         if ($this->request->isPost()) {
             // get post data
             $as_post = $this->request->getPost()->toArray();
-            
+
             // Add custom data from children classes
             if ($custom_data != null ){
                 $as_post = array_merge($as_post,$custom_data);
@@ -184,9 +186,14 @@ class CrudIndexController extends AbstractActionController
             } else {
                 $this->flashMessenger()->setNamespace($this->s_entityName)->addMessage($this->s_flashMessageNew);
             }
-            
-            return $this->crudRedirect('process');
+        
+            if ($this->redirectAfterProcess){
+                return $this->crudRedirect('process');
+            } else {
+                return true;
+            }
         }
+        
         $this->getResponse()->setStatusCode(404);
         return;
     }
