@@ -65,6 +65,19 @@ return array(
                         ),
                     ),
                     
+                    'detail' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route'    => '/detail[/:id]',
+                            'constraints' => array(
+                                'id'         => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'action' => 'detail',
+                            ),
+                        ),
+                    ),
+                    
                     'delete' => array(
                         'type' => 'Segment',
                         'options' => array(
