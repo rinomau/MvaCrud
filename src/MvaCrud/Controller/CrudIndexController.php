@@ -148,7 +148,11 @@ class CrudIndexController extends AbstractActionController
     public function detailAction(){
         $I_entity = $this->getEntityFromQuerystring();
         
-        $I_view = new ViewModel(array('I_entity' => $I_entity, 's_title' => $this->s_detailTitle));
+        $I_view = new ViewModel(array(
+            'I_entity' => $I_entity, 
+            's_title' => $this->s_detailTitle,
+            'as_messages' => $this->flashMessenger()->setNamespace($this->s_entityName)->getMessages()
+            ));
         $I_view->setTemplate($this->s_detailTemplate);
         return $I_view;
     }
